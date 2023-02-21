@@ -24,6 +24,25 @@ const addMarkup = galleryItems.map(pic => {
 gallery.insertAdjacentHTML('beforeend', addMarkup);
 gallery.addEventListener('click', clickOnOpen);
 
-function clickOnOpen(event) {};
+function clickOnOpen(event) {
+    event.preventDefault();
+    if (event.target.nodeName !== "IMG") {
+        return;
+    }
+    const instance = basicLightbox.create(`<img src = "${event.target.dataset.source}">`,
+        {
+            onShow: instance => {
+                window.addEventListener(`keydown`, onPress)
+            },
+            onclose: instance => {window.removeEventListener(`keydown`, onPress)},
+});
+
+function onPress(event) {
+            if(event.code === `Escape`) {
+                instance.close();
+    }
+}
+    instance.show();
+};
 
 
